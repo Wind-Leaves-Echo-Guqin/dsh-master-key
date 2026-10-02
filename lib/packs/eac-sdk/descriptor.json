@@ -1,0 +1,11 @@
+{
+  "packFormat": 1,
+  "id": "eac-sdk",
+  "version": "0.1.0",
+  "summary": "EAC Extension Host SDK V1 面模拟（registerTool/provideContext/on/settings/log + deny-by-default 权限门）+ extensions/registry 发现面",
+  "requiresHostCaps": ["cordis.ctx"],
+  "pluginSignals": [
+    { "kind": "manifestField", "path": "dsh.extension" },
+    { "kind": "entryExport", "value": "activate" }
+  ]
+}
