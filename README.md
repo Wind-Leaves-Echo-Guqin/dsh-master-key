@@ -36,13 +36,19 @@
 ## 测试
 
 ```sh
-npm test                 # L1 + L2 + L4（离线）
+npm test                 # L1 + L2 + L4（离线，57 项）
 npm run probe:l3         # L3：六代真内核 × 隔离 DSH_HOME headless 探针
+node scripts/run-samples.mjs 0.2.0-rc.2   # 真实插件样本（eco-note/our-free-model/皮肤/side-session）
+node scripts/run-eac-sdk.mjs 0.2.0-rc.2   # EAC SDK 插件在官方内核复活
+node lib/doctor/cli.mjs <插件目录> --kernel 0.2.0-rc.2   # 装前体检
 ```
 
 ## 状态
 
-v0.1：协议总线 + cordis-bundle（9 shim）+ eac-sdk + doctor 骨架。已知边界见 `docs/acceptance-report.md`。
+v0.1（2026-10-02）：协议总线 + cordis-bundle（9 shim）+ eac-sdk + doctor 骨架。
+验收结果与已知边界见 `docs/acceptance-report.md`：
+离线套件 57/57、真内核矩阵 6/6（0.1.0-rc.7 → 0.2.0-rc.2）、真实插件样本 4/4、
+eac-sdk 发现面探针 5/5。
 
 ## License
 
