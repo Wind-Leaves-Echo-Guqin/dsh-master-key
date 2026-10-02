@@ -1,0 +1,21 @@
+{
+  "id": "eac-v6",
+  "family": "eac",
+  "summary": "DSH-Desktop-EAC v6.0.0-beta（ADR 0006 内核解耦）",
+  "detect": [
+    { "kind": "dirExists", "path": "%LOCALAPPDATA%\\Programs\\DSH-Desktop-EAC" },
+    { "kind": "windowFlag", "name": "dshDesktop" }
+  ],
+  "packs": ["cordis-bundle", "eac-sdk"],
+  "surfaces": {
+    "static": "官方 cordis patch 四层（ADR 0008：插件发布物必须含 Cordis patch）",
+    "client": "官方 + 壳侧 window.dshDesktop protocolVersion 1 + 能力桩",
+    "llm": "官方 ctx.llm",
+    "outOfProc": "stdio/WS JSON-RPC；.sync/plugin-distribution.json 账本；skin.json 皮肤协议"
+  },
+  "adaptation": "high",
+  "kernelRange": "file:vendor/kernel/*（0.1.3-alpha.1 → 0.1.5-rc.2），内核零改动",
+  "cohabitation": "共享 ~/.dsh",
+  "tested": "research-only",
+  "notes": "eac-shell-bridge 协议包的对接对象（v0.2）；退役语义 JSON-RPC -32601 / HTTP 404"
+}

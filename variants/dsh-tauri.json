@@ -1,0 +1,21 @@
+{
+  "id": "dsh-tauri",
+  "family": "wrapper",
+  "summary": "dsh-tauri/deepseek-harness-desktop（多内核版本管理器壳）",
+  "detect": [
+    { "kind": "fileExists", "path": "%APPDATA%\\dsh-tauri" },
+    { "kind": "env", "name": "DSH_TAURI_MANIFEST", "value": "*" }
+  ],
+  "packs": ["cordis-bundle"],
+  "surfaces": {
+    "static": "官方 cordis/npm 插件面（壳不碰 cordis，只做版本门禁）",
+    "client": "官方",
+    "llm": "官方",
+    "outOfProc": "官方"
+  },
+  "adaptation": "low",
+  "kernelRange": "0.1.5-rc.1 最低 / 0.2.0-rc.2 推荐，多内核经 manifest.jsonc 选择",
+  "cohabitation": "托管 shim 提供 dsh/pnpm，PATH 注入",
+  "tested": "research-only",
+  "notes": "manifest.jsonc 的 {version, dsh} 区间对矩阵可被 peer-gate 只读借用"
+}

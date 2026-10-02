@@ -1,0 +1,20 @@
+{
+  "id": "oh-my-dsh-seams",
+  "family": "official",
+  "summary": "LaplaceYoung/oh-my-dsh 能力库（官方扩展缝，约 530 插件）",
+  "detect": [
+    { "kind": "manifestField", "path": "oh-my-dsh" }
+  ],
+  "packs": ["cordis-bundle"],
+  "surfaces": {
+    "static": "官方 cordis.yml 组合；seam 面 ctx.tools/shell/subagents/workflows/llm/sessionPersistence",
+    "client": "官方",
+    "llm": "官方 ctx.llm",
+    "outOfProc": "官方"
+  },
+  "adaptation": "low",
+  "kernelRange": "官方内核",
+  "cohabitation": "-",
+  "tested": "research-only",
+  "notes": "docs/seams-reference.md 是扩展缝契约的社区参考表述，dshx API 术语对齐源"
+}

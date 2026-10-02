@@ -1,0 +1,21 @@
+{
+  "id": "official-desktop",
+  "family": "official",
+  "summary": "官方桌面端 Desktop Preview v0.2（Electron，nightly 频道）",
+  "detect": [
+    { "kind": "dirExists", "path": "%LOCALAPPDATA%\\Programs\\DeepSeek Harness" },
+    { "kind": "fileContains", "path": "%LOCALAPPDATA%\\Programs\\DeepSeek Harness\\resources\\app-update.yml", "needle": "download.deepseek.com/dsh-desk" }
+  ],
+  "packs": ["cordis-bundle"],
+  "surfaces": {
+    "static": "同 official-cli；profile cordis.patch.yml 会被设置同步重写",
+    "client": "同 official-cli",
+    "llm": "同 official-cli",
+    "outOfProc": "同 official-cli"
+  },
+  "adaptation": "none",
+  "kernelRange": "0.1.5-rc.1（Preview）~ 0.2.0-rc.2（v0.2）",
+  "cohabitation": "与 EAC/AIO 共享 ~/.dsh，不可同开",
+  "tested": "local",
+  "notes": "内核 0.2.0-rc.2 实证：assertV4MessageSources / hostProtocolVersion 4 / peer 强制 / compatibility.json"
+}

@@ -1,0 +1,20 @@
+{
+  "id": "desktop-cc-gui",
+  "family": "aggregator",
+  "summary": "zhukunpenglinyutong/desktop-cc-gui（Tauri 多引擎客户端，DSH 为引擎之一）",
+  "detect": [
+    { "kind": "windowFlag", "name": "ccgui" }
+  ],
+  "packs": ["cordis-bundle"],
+  "surfaces": {
+    "static": "DSH 侧全官方（adopt-or-start 本地 web host + headless profile）",
+    "client": "官方",
+    "llm": "官方",
+    "outOfProc": "@ccgui/plugin-sdk（应用层，与 dsh 插件面平行，无翻译层）"
+  },
+  "adaptation": "high",
+  "kernelRange": "取决于被 adopt 的本地 dsh",
+  "cohabitation": "复用本地 dsh web host",
+  "tested": "research-only",
+  "notes": "ccgui 插件 ↔ dsh 插件两个宇宙的桥接是 v0.2+ 候选协议包"
+}

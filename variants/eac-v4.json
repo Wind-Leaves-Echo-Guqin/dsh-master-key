@@ -1,0 +1,21 @@
+{
+  "id": "eac-v4",
+  "family": "eac",
+  "summary": "Deepseek Harness EAC v4.4.x（Electron portable）",
+  "detect": [
+    { "kind": "dirExists", "path": "%LOCALAPPDATA%\\Programs\\Deepseek-Harness-EAC" },
+    { "kind": "fileContains", "path": "%LOCALAPPDATA%\\Programs\\Deepseek-Harness-EAC", "needle": "v4.4" }
+  ],
+  "packs": ["cordis-bundle", "eac-sdk"],
+  "surfaces": {
+    "static": "官方 cordis patch 四层",
+    "client": "官方 dsh.client.inject",
+    "llm": "官方 ctx.llm",
+    "outOfProc": "~/.dsh/extensions/ + registry.json 发现面；supervisor crashStreak/quarantine"
+  },
+  "adaptation": "medium",
+  "kernelRange": "0.1.0-rc.7 ~ 0.1.1-rc.2",
+  "cohabitation": "共享 ~/.dsh",
+  "tested": "simulated",
+  "notes": "plugin-guard.js 静态扫描（TROJAN_* / JUNCTION_FOREIGN / PATCH_DUP_ID）为本变体特有守卫"
+}

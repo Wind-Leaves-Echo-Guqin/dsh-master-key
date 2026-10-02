@@ -1,0 +1,21 @@
+{
+  "id": "official-cli",
+  "family": "official",
+  "summary": "官方 CLI（npm @deepseek-ai/dsh），协议规范源",
+  "detect": [
+    { "kind": "env", "name": "DSH_COMAT_FORCE_VARIANT", "value": "official-cli" },
+    { "kind": "moduleResolvable", "specifier": "@deepseek-ai/dsh/package.json" }
+  ],
+  "packs": ["cordis-bundle"],
+  "surfaces": {
+    "static": "cordis patch 四层（bundles -> profile patch -> home patch -> --patch）",
+    "client": "dsh.client.inject + slots/theme/timer/sessions 座位",
+    "llm": "官方 ctx.llm（registerAdapter/registerConfigurableProviders/registerModelDiscovery）",
+    "outOfProc": "dsh-sdk-app JSON-RPC / dsh-acp-app"
+  },
+  "adaptation": "none",
+  "kernelRange": "0.0.1-rc.1 ~ 0.2.0-rc.2（npm 全谱系 29 版）",
+  "cohabitation": "共享 ~/.dsh 于所有官方 profile",
+  "tested": "local",
+  "notes": "0.2.0 起 V4 producer-owned source kind + peerDependencies 强制 + compatibility.json 豁免"
+}

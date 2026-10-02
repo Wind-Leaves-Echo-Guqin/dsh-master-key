@@ -1,0 +1,20 @@
+{
+  "id": "launcher-linxin666",
+  "family": "wrapper",
+  "summary": "@linxin666/dsh-desktop-launcher（是插件不是壳：dsh web 一键启停）",
+  "detect": [
+    { "kind": "manifestField", "path": "name", "value": "@linxin666/dsh-desktop-launcher" }
+  ],
+  "packs": ["cordis-bundle"],
+  "surfaces": {
+    "static": "官方面内活动",
+    "client": "官方",
+    "llm": "官方",
+    "outOfProc": "官方"
+  },
+  "adaptation": "none",
+  "kernelRange": "官方",
+  "cohabitation": "-",
+  "tested": "research-only",
+  "notes": "同作者 @linxin666/dsh-doctor（事务式 profile 修复）"
+}

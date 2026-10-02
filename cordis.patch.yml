@@ -1,0 +1,6 @@
+# dsh-compat 自身的 bundle patch：把适配器核心挂进组合树。
+# 由 dsh-compat managed，用户层不需要手改。
+- id: dsh-compat-core
+  name: dsh-compat
+  config:
+    mode: auto

@@ -1,0 +1,30 @@
+{
+  "name": "dsh-compat",
+  "version": "0.1.0",
+  "description": "dsh 通用插件适配层：协议总线 + 可插拔协议包，让不同协议的 dsh 插件在各变体与历代内核上持续可用",
+  "type": "module",
+  "main": "lib/index.js",
+  "license": "MIT",
+  "engines": {
+    "node": ">=20"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  },
+  "scripts": {
+    "test": "node --test test/l1 test/l2 test/l4",
+    "test:l1": "node --test test/l1",
+    "test:l2": "node --test test/l2",
+    "test:l4": "node --test test/l4",
+    "probe:l3": "node scripts/run-matrix.mjs",
+    "doctor": "node lib/doctor/cli.mjs"
+  },
+  "files": [
+    "lib",
+    "variants",
+    "cordis.patch.yml",
+    "docs"
+  ]
+}

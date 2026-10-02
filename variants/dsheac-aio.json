@@ -1,0 +1,21 @@
+{
+  "id": "dsheac-aio",
+  "family": "aio",
+  "summary": "DSHEAC-AIO（All-in-One 整合包，钉版内核快照）",
+  "detect": [
+    { "kind": "dirExists", "path": "%LOCALAPPDATA%\\Programs\\DSHEAC-AIO" },
+    { "kind": "fileContains", "path": "%LOCALAPPDATA%\\Programs\\DSHEAC-AIO\\resources\\app\\package.json", "needle": "dsh-desktop-aio" }
+  ],
+  "packs": ["cordis-bundle"],
+  "surfaces": {
+    "static": "官方 cordis patch 四层 + sidecar 程序化写 profile（agent-presets YAML 块 / patch disabled 行 / patch-row-heal）",
+    "client": "官方 dsh.client.inject",
+    "llm": "官方 ctx.llm",
+    "outOfProc": "sidecar 托管（shell-host.js / desktop-core.js）"
+  },
+  "adaptation": "low",
+  "kernelRange": "0.1.1-rc.2 钉版（19 内核子包 + cordis-plugin-group）",
+  "cohabitation": "独立数据 .dsh-aio-data（AIO 独立线）",
+  "tested": "local",
+  "notes": "seed 物料 assets/agent-presets/；与官方 patch.yml 写入器共处时须让过其 managed 行"
+}

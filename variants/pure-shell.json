@@ -1,0 +1,18 @@
+{
+  "id": "pure-shell",
+  "family": "wrapper",
+  "summary": "纯壳泛型（HaoyueQin / agent-earth 等，仅拉起官方 web UI）",
+  "detect": [],
+  "packs": ["cordis-bundle"],
+  "surfaces": {
+    "static": "官方（零增量）",
+    "client": "官方",
+    "llm": "官方",
+    "outOfProc": "官方"
+  },
+  "adaptation": "none",
+  "kernelRange": "随所包装的官方内核",
+  "cohabitation": "-",
+  "tested": "research-only",
+  "notes": "识别不到具体变体但探测到官方 cordis 面时归入本族"
+}

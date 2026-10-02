@@ -1,0 +1,21 @@
+{
+  "id": "eac-v5",
+  "family": "eac",
+  "summary": "Deepseek Harness EAC v5.x（Tauri 2 壳，dsh-eac-shell.exe）",
+  "detect": [
+    { "kind": "dirExists", "path": "%LOCALAPPDATA%\\Programs\\Deepseek-Harness-EAC-v5\\dsh-desktop" },
+    { "kind": "fileContains", "path": "%LOCALAPPDATA%\\Programs\\Deepseek-Harness-EAC-v5\\dsh-desktop\\package.json", "needle": "\"version\": \"5." }
+  ],
+  "packs": ["cordis-bundle", "eac-sdk"],
+  "surfaces": {
+    "static": "官方 cordis patch 四层",
+    "client": "官方 dsh.client.inject（0.1.2-alpha 起有独立 dsh-client-ui-slots 包）",
+    "llm": "官方 ctx.llm",
+    "outOfProc": "Extension Host SDK V1：ctx.log/registerTool/provideContext/on/settings + deny-by-default 权限门 + Job Object 围栏"
+  },
+  "adaptation": "high",
+  "kernelRange": "0.1.2-alpha.1（未发 npm；同族 alpha.2~rc.1 近似）",
+  "cohabitation": "共享 ~/.dsh；Tauri 壳数据在 com.deepseek.dsh.desktop.tauri",
+  "tested": "simulated",
+  "notes": "SettingsScopeController.load() 已移除（六内置插件内联 shim）；日志 %APPDATA%\\Deepseek Harness EAC\\logs"
+}
