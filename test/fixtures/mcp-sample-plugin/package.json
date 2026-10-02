@@ -1,0 +1,15 @@
+{
+  "name": "mcp-sample-plugin",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "L3 探针夹具：声明 dsh.mcp.servers 的 MCP 桥接插件（宿主半为空，工具由 out-of-process 包注册）",
+  "main": "index.js",
+  "dsh": {
+    "mcp": {
+      "servers": {
+        "demo": { "command": "node", "args": ["test/fixtures/mcp-echo-server.mjs"] }
+      }
+    }
+  }
+}

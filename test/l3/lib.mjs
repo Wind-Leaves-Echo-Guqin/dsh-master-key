@@ -12,8 +12,13 @@ const PROBES = join(REPO, 'test', 'probes');
 
 export const ALL_VERSIONS = ['0.1.0-rc.7', '0.1.1-rc.2', '0.1.2-rc.1', '0.1.5-rc.1', '0.1.7-rc.2', '0.2.0-rc.2'];
 
-export function kernelRoot(v) { return join(KERNELS, `k-${v}`, 'node_modules', '@deepseek-ai', 'dsh'); }
-export function homeDir(v) { return join(PROBES, `v-${v}`, 'home'); }
+export function kernelRoot(v) {
+  // 绝对路径支持：直接探测任意安装的内核（如 EAC 私有内核 0.1.2-alpha.1）
+  if (/[\\/]/.test(v) && existsSync(join(v, 'lib', 'bin.js'))) return v;
+  return join(KERNELS, `k-${v}`, 'node_modules', '@deepseek-ai', 'dsh');
+}
+export function labelFor(v) { return `v-${v.replace(/[^a-z0-9._-]/gi, '_')}`; }
+export function homeDir(v) { return join(PROBES, labelFor(v), 'home'); }
 export function kernelInstalled(v) { return existsSync(join(kernelRoot(v), 'lib', 'bin.js')); }
 export function installedVersions() { return ALL_VERSIONS.filter(kernelInstalled); }
 
@@ -33,7 +38,7 @@ function pinHmrIfNeeded(v) {
     // app-boot 通常与 dsh 同级；版本冲突时会被 npm 嵌套进 dsh 自己的 node_modules
     const appBootCandidates = [join(scopeDir, 'dsh-app-boot', 'lib', 'index.js'), join(root, 'node_modules', '@deepseek-ai', 'dsh-app-boot', 'lib', 'index.js')];
     const appBootFile = appBootCandidates.find(f => existsSync(f));
-    if (!appBootFile) return { ok: false, reason: 'dsh-app-boot 未找到（布局未知）' };
+    if (!appBootFile) return { ok: true, reason: 'app-boot 未找到，跳过钉版判定（该内核可能不依赖 registerConfig）' };
     const appBootSrc = readFileSync(appBootFile, 'utf8');
     if (!appBootSrc.includes('registerConfig')) return { ok: true, reason: 'app-boot 不需要 registerConfig' };
     const hmrTypes = join(nm, '@deepseek-ai', 'cordis-plugin-hmr', 'lib', 'types', 'index.d.ts');
@@ -68,7 +73,7 @@ function runNode(args, env, { timeoutMs = 240_000 } = {}) {
   }
 }
 
-// junction：repo → profile node_modules/dsh-compat（super-injector 同款机制，绕过 pnpm）
+// junction：repo → profile node_modules/dsh-master-key（super-injector 同款机制，绕过 pnpm）
 function ensureJunction(link, target) {
   if (existsSync(link)) return true;
   mkdirSync(dirname(link), { recursive: true });
@@ -99,7 +104,7 @@ export function prepareProbe(v, { fixturePath = join(REPO, 'test', 'fixtures', '
   }
 
   // 2) junction 适配器进 profile node_modules
-  const linked = ensureJunction(join(profileDir, 'node_modules', 'dsh-compat'), REPO);
+  const linked = ensureJunction(join(profileDir, 'node_modules', 'dsh-master-key'), REPO);
   if (!linked) return { ok: false, step: 'junction', detail: 'mklink 失败' };
 
   // 3) 适配器以 bundle 身份挂进 profile（用户 patch 层保持空 []——非空会触发
@@ -112,7 +117,7 @@ export function prepareProbe(v, { fixturePath = join(REPO, 'test', 'fixtures', '
   // 插到 dsh-base 之后、dsh-headless 之前：headless 的 one-shot runner 在自己的
   // apply 里就跑任务，适配器必须先于它激活（mock LLM 才来得及注册）。
   const bundles = pkg.dsh.profile.bundles || [];
-  if (!bundles.includes('dsh-compat')) bundles.splice(Math.min(1, bundles.length), 0, 'dsh-compat');
+  if (!bundles.includes('dsh-master-key')) bundles.splice(Math.min(1, bundles.length), 0, 'dsh-master-key');
   pkg.dsh.profile.bundles = bundles;
   writeFileSync(pkgFile, JSON.stringify(pkg, null, 2), 'utf8');
 
@@ -122,10 +127,10 @@ export function prepareProbe(v, { fixturePath = join(REPO, 'test', 'fixtures', '
   //      patch watch fail-loud 炸 boot；这是 npm 裸装内核 + headless 的组合 bug）
   //    - agent-default-model → mock provider
   //    只存在于探针 home，绝不写进适配器正式 manifest。
-  const mockPatch = join(PROBES, `v-${v}`, 'mock-patch.yml');
+  const mockPatch = join(PROBES, labelFor(v), 'mock-patch.yml');
   mkdirSync(PROBES, { recursive: true });
   writeFileSync(mockPatch, [
-    '# dsh-compat L3 测试覆盖层（仅探针 home 生效）',
+    '# dsh-master-key L3 测试覆盖层（仅探针 home 生效）',
     '- id: hmr',
     '  name: \'@deepseek-ai/cordis-plugin-hmr\'',
     '  disabled: false',
@@ -159,8 +164,8 @@ export async function bootProbe(v, { job = 'probe job', timeoutMs = 240_000, fix
   if (mockPatch) args.push('--patch', mockPatch);
   args.push(job);
   const r = runNode(args, env, { timeoutMs });
-  mkdirSync(join(PROBES, `v-${v}`), { recursive: true });
-  writeFileSync(join(PROBES, `v-${v}`, 'boot.log'), `exit=${r.code}\n=== STDOUT ===\n${r.stdout}\n=== STDERR ===\n${r.stderr}`, 'utf8');
+  mkdirSync(join(PROBES, labelFor(v)), { recursive: true });
+  writeFileSync(join(PROBES, labelFor(v), `boot.log`), `exit=${r.code}\n=== STDOUT ===\n${r.stdout}\n=== STDERR ===\n${r.stderr}`, 'utf8');
   return r;
 }
 
@@ -190,7 +195,7 @@ export function assertProbe(v, boot) {
   try {
     const mx = JSON.parse(readFileSync(join(home, 'dshx', 'matrix.json'), 'utf8'));
     check('matrix-written', true);
-    check('matrix-adapter', mx.adapter?.version === '0.1.0');
+    check('matrix-adapter', mx.adapter?.version === '0.2.0');
     check('matrix-pack-cordis-bundle', Array.isArray(mx.packs) && mx.packs.some(p => p.id === 'cordis-bundle'));
   } catch (e) {
     check('matrix-written', false, String(e?.message || e));

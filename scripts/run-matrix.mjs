@@ -19,8 +19,9 @@ if (versions.length === 0) {
 let failed = 0;
 const rows = [];
 for (const v of versions) {
-  if (!ALL_VERSIONS.includes(v)) { console.error(`未知版本 ${v}`); process.exit(2); }
-  if (!installedVersions().includes(v)) { rows.push({ v, status: 'SKIP(未安装)' }); continue; }
+  const isCustom = /[\\/]/.test(v); // 绝对路径 = 任意安装的内核（如 EAC 私有内核）
+  if (!isCustom && !ALL_VERSIONS.includes(v)) { console.error(`未知版本 ${v}`); process.exit(2); }
+  if (!installedVersions().includes(v) && !isCustom) { rows.push({ v, status: 'SKIP(未安装)' }); continue; }
   process.stdout.write(`[${v}] 准备…`);
   const prep = prepareProbe(v);
   if (!prep.ok) {

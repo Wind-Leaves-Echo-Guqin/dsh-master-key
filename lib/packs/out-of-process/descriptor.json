@@ -1,0 +1,10 @@
+{
+  "packFormat": 1,
+  "id": "out-of-process",
+  "version": "0.2.0",
+  "summary": "把 MCP server（stdio）当 dsh 插件用：声明 dsh.mcp.servers 即自动握手、枚举工具并注册进 ctx.tools",
+  "requiresHostCaps": ["cordis.ctx"],
+  "pluginSignals": [
+    { "kind": "manifestField", "path": "dsh.mcp" }
+  ]
+}

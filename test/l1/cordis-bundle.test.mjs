@@ -148,7 +148,7 @@ module.exports.apply = async (ctx) => {
   } finally { rmSync(dir, { recursive: true, force: true }); }
 });
 
-test('注入桥：贡献者文本经 pre-step 追加，producer = dsh-compat-core', async () => {
+test('注入桥：贡献者文本经 pre-step 追加，producer = dsh-master-key', async () => {
   let handler = null;
   const hostCtx = { on: (ev, fn, opts) => { handler = fn; }, logger: logger() };
   const contributors = [{ fn: async () => 'hello-from-contrib', opts: { order: 500, form: 'snapshot' } }];
@@ -157,7 +157,7 @@ test('注入桥：贡献者文本经 pre-step 追加，producer = dsh-compat-cor
   const decision = await handler({ agent: { id: 's1' } }, async () => ({ kind: 'proceed', messages: [{ role: 'user', content: [] }] }));
   assert.equal(decision.kind, 'enter');
   assert.equal(decision.messages.length, 2);
-  assert.equal(decision.messages[1].source.kind, 'dsh-compat-core');
+  assert.equal(decision.messages[1].source.kind, 'dsh-master-key');
   assert.deepEqual(decision.messages[1].content, [{ type: 'text', text: 'hello-from-contrib' }]);
 });
 

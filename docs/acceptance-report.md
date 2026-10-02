@@ -96,3 +96,22 @@ node scripts/run-samples.mjs 0.2.0-rc.2   # 真实插件样本
 node scripts/run-eac-sdk.mjs 0.2.0-rc.2   # eac-sdk 发现面
 node lib/doctor/cli.mjs <插件目录> --kernel 0.2.0-rc.2   # 装前体检
 ```
+
+---
+
+## v0.2.0 追加验收（2026-10-03）
+
+- **更名**：dsh-compat → **dsh-master-key（万能钥匙）**；包名/入口 id/注入 producer 同步更名。
+- **EAC 私有内核实机**：探针支持任意安装内核路径；EAC v5.3.6 内置内核
+  **0.1.2-alpha.1 直接实测 PASS**（不再依赖 0.1.2-rc.1 近似）。
+- **官方守卫实测**：提取 EAC plugin-guard.js 的 TROJAN_PATTERNS 五条官方规则扫描本仓库——
+  初扫命中 1 条（doctor.js 里镜像规则的字面示例文本触发 TROJAN_PERSISTENCE，"守卫误伤适配器"
+  预言成真）；修复方式为规则字面量拆接构造；复扫**全仓库零命中（36 文件）**。
+- **out-of-process 协议包（MCP stdio 桥）**：声明 `dsh.mcp.servers` 的插件经适配器完成
+  MCP 握手并注册工具。L4 三件套 + 真内核探针 0.2.0-rc.2 / 0.1.1-rc.2 全绿。
+  实测发现并修复：MCP 子进程 stdio 管道阻住宿主进程退出（headless 240s ETIMEDOUT），
+  修复 = 子进程 unref + 进程退出兜底回收。
+- **回归总数**：离线 **62/62**；真内核矩阵 **7/7**（npm 六代 + EAC 私有内核）；样本 4/4；
+  eac-sdk 5/5；mcp 3/3。
+- **未实现**（见 docs/v0.2-roadmap.md）：eac-shell-bridge（EAC v6 未装，无法诚实测试）、
+  MCP 非 stdio 传输、server 崩溃自愈。

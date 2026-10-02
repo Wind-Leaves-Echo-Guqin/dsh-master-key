@@ -31,16 +31,16 @@ test('镜像：source-kind shim 归一后的消息通过 V4 校验', () => {
 });
 
 test('镜像：缺 plugin 字段的旧式消息 → 回落 producer 名', () => {
-  const { msg } = normalizeMessageSource({ source: { kind: 'plugin' } }, 'dsh-compat-core');
+  const { msg } = normalizeMessageSource({ source: { kind: 'plugin' } }, 'dsh-master-key');
   assert.doesNotThrow(() => assertV4MessageSources(msg));
-  assert.equal(msg.source.kind, 'dsh-compat-core');
+  assert.equal(msg.source.kind, 'dsh-master-key');
 });
 
 test('镜像：注入桥产物（工厂形与兜底形）都通过 V4 校验', () => {
   const factory = (input) => Object.freeze({ role: 'user', ...input });
-  for (const m of [buildInjectionMessage(factory, 't', 'dsh-compat-core'), buildInjectionMessage(null, 't', 'dsh-compat-core')]) {
+  for (const m of [buildInjectionMessage(factory, 't', 'dsh-master-key'), buildInjectionMessage(null, 't', 'dsh-master-key')]) {
     assert.doesNotThrow(() => assertV4MessageSources(m));
-    assert.equal(m.source.kind, 'dsh-compat-core');
+    assert.equal(m.source.kind, 'dsh-master-key');
   }
 });
 
