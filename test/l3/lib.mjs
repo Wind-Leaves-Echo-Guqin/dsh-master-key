@@ -144,17 +144,17 @@ export function prepareProbe(v, { fixturePath = join(REPO, 'test', 'fixtures', '
 }
 
 // ── 启动：headless one-shot ────────────────────────────────────────────────
-export async function bootProbe(v, { job = 'probe job', timeoutMs = 240_000, fixturePath = join(REPO, 'test', 'fixtures', 'probe-fixture', 'index.cjs'), mockPatch = null } = {}) {
+export async function bootProbe(v, { job = 'probe job', timeoutMs = 240_000, fixturePath = null, mockPatch = null } = {}) {
   const home = homeDir(v);
   const env = {
     DSH_HOME: home,
     DSH_KERNEL_ROOT: kernelRoot(v),
     DSH_PROFILE_DIR: join(home, 'profiles', 'headless'),
     DSHX_MOCK_LLM: '1',
-    DSHX_TARGETS: JSON.stringify([{ path: fixturePath.replace(/\\/g, '/') }]),
     DSH_COMPAT_FORCE_VARIANT: 'official-cli',
     DSH_EXEC_PATH: binJs(v),
   };
+  if (fixturePath) env.DSHX_TARGETS = JSON.stringify([{ path: fixturePath.replace(/\\/g, '/') }]);
   const args = [binJs(v), '--profile', 'headless'];
   if (mockPatch) args.push('--patch', mockPatch);
   args.push(job);

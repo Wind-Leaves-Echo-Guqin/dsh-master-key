@@ -2,7 +2,11 @@
 //   node scripts/run-matrix.mjs [版本...]   # 缺省 = 全部已安装版本
 // 退出码：任一 FAIL → 1。
 
+import { join, dirname, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { installedVersions, ALL_VERSIONS, prepareProbe, bootProbe, assertProbe } from '../test/l3/lib.mjs';
+
+const REPO = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 
 const requested = process.argv.slice(2);
 const versions = requested.length > 0 ? requested : installedVersions();
@@ -26,7 +30,7 @@ for (const v of versions) {
     continue;
   }
   process.stdout.write(' 启动…');
-  const boot = await bootProbe(v, { mockPatch: prep.mockPatch });
+  const boot = await bootProbe(v, { mockPatch: prep.mockPatch, fixturePath: join(REPO, 'test', 'fixtures', 'probe-fixture', 'index.cjs') });
   const result = assertProbe(v, boot);
   rows.push({ v, status: result.pass ? 'PASS' : 'FAIL', ...result });
   if (!result.pass) failed++;
