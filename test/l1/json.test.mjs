@@ -14,7 +14,7 @@ test('readJsonFile：BOM 文件可解析；坏文件返回 null 不抛', () => {
   const dir = mkdtempSync(join(tmpdir(), 'dshcompat-json-'));
   try {
     const bomFile = join(dir, 'bom.json');
-    writeFileSync(bomFile, Buffer.concat([Buffer.from([0xef, 0xbb, 0xbf]), Buffer.from('{"targets":[{"path":"x"}]}')], 'utf8'));
+    writeFileSync(bomFile, Buffer.concat([Buffer.from([0xef, 0xbb, 0xbf]), Buffer.from('{"targets":[{"path":"x"}]}')]));
     const j = readJsonFile(bomFile);
     assert.deepEqual(j, { targets: [{ path: 'x' }] });
 
