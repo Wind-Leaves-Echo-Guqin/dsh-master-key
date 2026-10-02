@@ -4,6 +4,7 @@
   "version": "0.1.0",
   "summary": "官方 cordis 四层静态面兼容：tools/llm/webServer/agents/settings + 注入桥 + 首批 shim",
   "requiresHostCaps": ["cordis.ctx"],
+  "genericFallback": true,
   "pluginSignals": [
     { "kind": "manifestField", "path": "dsh.bundle.patch" },
     { "kind": "entryExport", "value": "apply" },

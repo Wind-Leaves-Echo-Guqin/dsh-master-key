@@ -3,10 +3,24 @@
   "family": "eac",
   "summary": "Deepseek Harness EAC v4.4.x（Electron portable）",
   "detect": [
-    { "kind": "dirExists", "path": "%LOCALAPPDATA%\\Programs\\Deepseek-Harness-EAC" },
-    { "kind": "fileContains", "path": "%LOCALAPPDATA%\\Programs\\Deepseek-Harness-EAC", "needle": "v4.4" }
+    {
+      "kind": "dirExists",
+      "path": "%LOCALAPPDATA%\\Programs\\Deepseek-Harness-EAC"
+    },
+    {
+      "kind": "fileContains",
+      "path": "%LOCALAPPDATA%\\Programs\\Deepseek-Harness-EAC",
+      "needle": "v4.4"
+    },
+    {
+      "kind": "execPathContains",
+      "needle": "Deepseek-Harness-EAC"
+    }
   ],
-  "packs": ["cordis-bundle", "eac-sdk"],
+  "packs": [
+    "cordis-bundle",
+    "eac-sdk"
+  ],
   "surfaces": {
     "static": "官方 cordis patch 四层",
     "client": "官方 dsh.client.inject",

@@ -3,10 +3,23 @@
   "family": "aio",
   "summary": "DSHEAC-AIO（All-in-One 整合包，钉版内核快照）",
   "detect": [
-    { "kind": "dirExists", "path": "%LOCALAPPDATA%\\Programs\\DSHEAC-AIO" },
-    { "kind": "fileContains", "path": "%LOCALAPPDATA%\\Programs\\DSHEAC-AIO\\resources\\app\\package.json", "needle": "dsh-desktop-aio" }
+    {
+      "kind": "dirExists",
+      "path": "%LOCALAPPDATA%\\Programs\\DSHEAC-AIO"
+    },
+    {
+      "kind": "fileContains",
+      "path": "%LOCALAPPDATA%\\Programs\\DSHEAC-AIO\\resources\\app\\package.json",
+      "needle": "dsh-desktop-aio"
+    },
+    {
+      "kind": "execPathContains",
+      "needle": "DSHEAC-AIO"
+    }
   ],
-  "packs": ["cordis-bundle"],
+  "packs": [
+    "cordis-bundle"
+  ],
   "surfaces": {
     "static": "官方 cordis patch 四层 + sidecar 程序化写 profile（agent-presets YAML 块 / patch disabled 行 / patch-row-heal）",
     "client": "官方 dsh.client.inject",

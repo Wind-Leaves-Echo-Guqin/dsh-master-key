@@ -1,6 +1,8 @@
 # dsh-compat 自身的 bundle patch：把适配器核心挂进组合树。
 # 由 dsh-compat managed，用户层不需要手改。
-- id: dsh-compat-core
-  name: dsh-compat
-  config:
-    mode: auto
+# 语义（dsh-app-boot applyEntryPatches）：顶层 {id,...} 是对既有条目的定向覆盖；
+# 新增 loader 条目必须走 insert 列表。
+- insert:
+    - id: dsh-compat-core
+      name: dsh-compat
+      config: {}

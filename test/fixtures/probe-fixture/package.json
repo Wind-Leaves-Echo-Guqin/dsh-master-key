@@ -1,0 +1,7 @@
+{
+  "name": "dshx-probe-fixture",
+  "version": "0.1.0",
+  "private": true,
+  "description": "L3 探针夹具：验证适配器在真内核上的激活/工具注册/日志面/上下文贡献",
+  "main": "index.cjs"
+}

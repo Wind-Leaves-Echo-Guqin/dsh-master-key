@@ -3,10 +3,23 @@
   "family": "eac",
   "summary": "DSH-Desktop-EAC v6.0.0-beta（ADR 0006 内核解耦）",
   "detect": [
-    { "kind": "dirExists", "path": "%LOCALAPPDATA%\\Programs\\DSH-Desktop-EAC" },
-    { "kind": "windowFlag", "name": "dshDesktop" }
+    {
+      "kind": "dirExists",
+      "path": "%LOCALAPPDATA%\\Programs\\DSH-Desktop-EAC"
+    },
+    {
+      "kind": "windowFlag",
+      "name": "dshDesktop"
+    },
+    {
+      "kind": "execPathContains",
+      "needle": "DSH-Desktop-EAC"
+    }
   ],
-  "packs": ["cordis-bundle", "eac-sdk"],
+  "packs": [
+    "cordis-bundle",
+    "eac-sdk"
+  ],
   "surfaces": {
     "static": "官方 cordis patch 四层（ADR 0008：插件发布物必须含 Cordis patch）",
     "client": "官方 + 壳侧 window.dshDesktop protocolVersion 1 + 能力桩",

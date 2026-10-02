@@ -3,10 +3,23 @@
   "family": "wrapper",
   "summary": "dsh-tauri/deepseek-harness-desktop（多内核版本管理器壳）",
   "detect": [
-    { "kind": "fileExists", "path": "%APPDATA%\\dsh-tauri" },
-    { "kind": "env", "name": "DSH_TAURI_MANIFEST", "value": "*" }
+    {
+      "kind": "fileExists",
+      "path": "%APPDATA%\\dsh-tauri"
+    },
+    {
+      "kind": "env",
+      "name": "DSH_TAURI_MANIFEST",
+      "value": "*"
+    },
+    {
+      "kind": "execPathContains",
+      "needle": "dsh-tauri"
+    }
   ],
-  "packs": ["cordis-bundle"],
+  "packs": [
+    "cordis-bundle"
+  ],
   "surfaces": {
     "static": "官方 cordis/npm 插件面（壳不碰 cordis，只做版本门禁）",
     "client": "官方",

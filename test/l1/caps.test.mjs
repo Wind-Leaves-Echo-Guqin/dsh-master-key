@@ -6,16 +6,26 @@ import { join } from 'node:path';
 import { probeCaps, fsSignal, locateKernelRoot, detectHostProtocol, dshHome } from '../../lib/core/caps.js';
 
 function mockCtx(over = {}) {
-  return {
-    on: () => () => {},
-    get: () => undefined,
-    provide: () => {},
+  // get 走机会式读取面（cordis 守卫语义下 probeCaps 实际使用的路径）
+  const services = {
     logger: { info() {}, warn() {}, error() {}, debug() {} },
     tools: { register: () => () => {} },
     llm: { registerAdapter: () => ({}) },
     webServer: { register: () => () => {} },
     agents: {},
     settings: { register: () => ({ get: () => undefined }) },
+    ...over._services,
+  };
+  return {
+    on: () => () => {},
+    get: (name) => services[name],
+    provide: () => {},
+    logger: services.logger,
+    tools: services.tools,
+    llm: services.llm,
+    webServer: services.webServer,
+    agents: services.agents,
+    settings: services.settings,
     ...over,
   };
 }
@@ -33,7 +43,7 @@ test('probeCaps：完整 mock 宿主 → 服务位全 true，内核未知 → �
 });
 
 test('probeCaps：残缺宿主 → 对应位 false 而非崩溃', async () => {
-  const caps = await probeCaps(mockCtx({ llm: undefined, webServer: undefined }), {});
+  const caps = await probeCaps(mockCtx({ _services: { llm: undefined, webServer: undefined }, llm: undefined, webServer: undefined }), {});
   assert.equal(caps['dsh.llm'], false);
   assert.equal(caps['dsh.webserver'], false);
   assert.equal(caps['dsh.settings'], true);
