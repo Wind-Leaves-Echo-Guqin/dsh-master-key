@@ -1,0 +1,4 @@
+# 统一换行，避免 Windows 下 EOL 漂移干扰逐字节对比
+* text=auto eol=lf
+*.png binary
+*.webp binary

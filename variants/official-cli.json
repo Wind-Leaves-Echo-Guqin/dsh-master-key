@@ -3,7 +3,7 @@
   "family": "official",
   "summary": "官方 CLI（npm @deepseek-ai/dsh），协议规范源",
   "detect": [
-    { "kind": "env", "name": "DSH_COMAT_FORCE_VARIANT", "value": "official-cli" },
+    { "kind": "env", "name": "DSH_COMPAT_FORCE_VARIANT", "value": "official-cli" },
     { "kind": "moduleResolvable", "specifier": "@deepseek-ai/dsh/package.json" }
   ],
   "packs": ["cordis-bundle"],
